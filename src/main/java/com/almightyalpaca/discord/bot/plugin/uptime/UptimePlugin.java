@@ -2,9 +2,9 @@ package com.almightyalpaca.discord.bot.plugin.uptime;
 
 import java.lang.management.ManagementFactory;
 
-import com.almightyalpaca.discord.bot.system.command.AbstractCommand;
-import com.almightyalpaca.discord.bot.system.command.annotation.Command;
-import com.almightyalpaca.discord.bot.system.events.CommandEvent;
+import com.almightyalpaca.discord.bot.system.command.Command;
+import com.almightyalpaca.discord.bot.system.command.CommandHandler;
+import com.almightyalpaca.discord.bot.system.events.commands.CommandEvent;
 import com.almightyalpaca.discord.bot.system.exception.PluginLoadingException;
 import com.almightyalpaca.discord.bot.system.exception.PluginUnloadingException;
 import com.almightyalpaca.discord.bot.system.plugins.Plugin;
@@ -16,13 +16,13 @@ import net.dv8tion.jda.MessageBuilder.Formatting;
 
 public class UptimePlugin extends Plugin {
 
-	class UptimeCommand extends AbstractCommand {
+	class UptimeCommand extends Command {
 
 		public UptimeCommand() {
 			super("uptime", "How long am i running?", "");
 		}
 
-		@Command(dm = true, guild = true)
+		@CommandHandler(dm = true, guild = true)
 		private void onCommand(final CommandEvent event) {
 
 			final long duration = ManagementFactory.getRuntimeMXBean().getUptime();
@@ -33,10 +33,10 @@ public class UptimePlugin extends Plugin {
 			final long hours = duration / 3600000L % 24;
 			final long minutes = duration / 60000L % 60;
 			final long seconds = duration / 1000L % 60;
-			final long milliseconds = duration % 1000;
+			// final long milliseconds = duration % 1000;
 
 			String uptime = (years == 0 ? "" : years + " Years, ") + (months == 0 ? "" : months + " Months, ") + (days == 0 ? "" : days + " Days, ") + (hours == 0 ? "" : hours + " Hours, ")
-					+ (minutes == 0 ? "" : minutes + " Minutes, ") + (seconds == 0 ? "" : seconds + " Seconds, ") + (milliseconds == 0 ? "" : milliseconds + " Milliseconds, ");
+				+ (minutes == 0 ? "" : minutes + " Minutes, ") + (seconds == 0 ? "" : seconds + " Seconds, ") /* + (milliseconds == 0 ? "" : milliseconds + " Milliseconds, ") */;
 
 			uptime = StringUtils.replaceLast(uptime, ", ", "");
 			uptime = StringUtils.replaceLast(uptime, ",", " and");
